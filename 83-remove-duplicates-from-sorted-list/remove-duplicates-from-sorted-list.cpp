@@ -14,18 +14,13 @@ public:
         if(head==NULL || head->next==NULL) return head;
 
         ListNode* curr=head;
-        ListNode* nex=head->next;
 
-        while(nex!=NULL){
-            if(curr->val==nex->val){
-                curr->next=nex->next;
-                ListNode* temp=nex;
-                nex=nex->next;
-                delete temp;
+        while(curr!=NULL && curr->next!=NULL){
+            if(curr->val==curr->next->val){
+                curr->next=curr->next->next;
             }
             else{
-                curr=nex;
-                nex=nex->next;
+                curr=curr->next;
             }
         }
         return head;
