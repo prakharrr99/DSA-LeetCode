@@ -14,7 +14,7 @@ public:
         int i=0;
         while(i<s.size()){
 
-            if(i<+1<s.size() && m[s[i]] < m[s[i+1]]){
+            if(i+1<s.size() && m[s[i]] < m[s[i+1]]){
                 sum+=(m[s[i+1]]-m[s[i]]);
                 i+=2;
             }
