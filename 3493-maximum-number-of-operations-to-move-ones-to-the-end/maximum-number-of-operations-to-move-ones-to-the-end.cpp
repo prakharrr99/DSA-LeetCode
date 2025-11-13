@@ -4,11 +4,12 @@ public:
         int op=0;
         int c=0;
         int i=0;
+        bool f=true;
         while(i<s.size()){
             if(s[i]=='1'){
                 c++;
             }
-            bool f=true;
+            f=true;
             while(s[i]=='0'){
                 i++;
                 f=false;
