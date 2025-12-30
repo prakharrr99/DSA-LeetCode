@@ -10,24 +10,16 @@
  * };
  */
 class Solution {
-    void count(TreeNode* root,int a,int& m){
-        if(root==NULL){
-            m=max(m,a);
-            return;
-        }
-        a=a+1;
-        count(root->left,a,m);
-        count(root->right,a,m);
-        a=a-1;
+    int height(TreeNode* root) {
+        if (root == NULL) return 0;
+        return 1 + max(height(root->left), height(root->right));
     }
 private:
     void diameter(TreeNode* root,int& dia){
         if(root==NULL) return;
         
-        int a=0; int h1=INT_MIN;
-        count(root->left,a,h1);
-        int b=0; int h2=INT_MIN;
-        count(root->right,b,h2);
+        int h1=height(root->left);
+        int h2=height(root->right);
         dia=max(dia,h1+h2);
 
         diameter(root->left,dia);
