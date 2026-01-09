@@ -18,7 +18,7 @@ private:
     }
 public:
     long long countSubarrays(vector<int>& nums, int k) {
-        long long p=solve(nums,nums.size());
+        long long p=nums.size()*(nums.size()+1)/2;
         if(k==0) return p;
         long long q=solve(nums,k-1);
         return p-q;
