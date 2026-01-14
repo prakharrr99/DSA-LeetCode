@@ -10,28 +10,36 @@
  * };
  */
 class Solution {
+private:
+    void solve(TreeNode* root,vector<int>& ans,int l){
+        if(root==NULL) return ;
+        if(ans.size()==l) ans.push_back(root->val);
+        solve(root->right,ans,l+1);
+        solve(root->left,ans,l+1);
+    }
 public:
     vector<int> rightSideView(TreeNode* root) {
         vector<int> ans;
         if(root==NULL) return ans;
-        queue<TreeNode*> q;
-        q.push(root);
-        q.push(NULL);
-        int a=0;
-        while(!q.empty()){
-            TreeNode* temp=q.front();
-            q.pop();
-            if(temp==NULL){
-                a=0;
-                if(!q.empty()) q.push(NULL);
-            }
-            else{
-                if(a==0) ans.push_back(temp->val);
-                a++;
-                if(temp->right!=NULL) q.push(temp->right);
-                if(temp->left!=NULL) q.push(temp->left);
-            }
-        }
+        solve(root,ans,0);
+        // queue<TreeNode*> q;
+        // q.push(root);
+        // q.push(NULL);
+        // int a=0;
+        // while(!q.empty()){
+        //     TreeNode* temp=q.front();
+        //     q.pop();
+        //     if(temp==NULL){
+        //         a=0;
+        //         if(!q.empty()) q.push(NULL);
+        //     }
+        //     else{
+        //         if(a==0) ans.push_back(temp->val);
+        //         a++;
+        //         if(temp->right!=NULL) q.push(temp->right);
+        //         if(temp->left!=NULL) q.push(temp->left);
+        //     }
+        // }
         return ans;
     }
 };
