@@ -2,8 +2,15 @@ class Solution {
 public:
     int maximumGap(vector<int>& nums) {
         if(nums.size()<2) return 0;
+        multiset<int> ms;
+        for(auto it:nums) ms.insert(it);
 
-        sort(nums.begin(),nums.end());
+        //sort(nums.begin(),nums.end());
+        
+        int i=0;
+        for(auto it=ms.begin();it!=ms.end();it++){
+            nums[i++]=*it;
+        }
         int m=INT_MIN;
         for(int i=0;i<nums.size()-1;i++){
             m=max(nums[i+1]-nums[i],m);
