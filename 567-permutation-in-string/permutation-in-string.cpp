@@ -15,16 +15,17 @@ public:
             j++;
         }
 
-        if(f==f1) return true;
-        f1[s2[i]-'a']--;
-        i++;
+        // if(f==f1) return true;
+        // f1[s2[i]-'a']--;
+        // i++;
         while(j<s2.size()){
-            f1[s2[j]-'a']++;
             if(f==f1) return true;
+            f1[s2[j]-'a']++;
             f1[s2[i]-'a']--;
             i++;
             j++;
         }
+        if(f==f1) return true;
         return false;
     }
 };
