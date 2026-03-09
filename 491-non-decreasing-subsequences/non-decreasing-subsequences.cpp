@@ -14,29 +14,21 @@ public:
             return;
         }
         
-        a.push_back(nums[i]);
-        solve(i+1,a,ans,nums);
-        a.pop_back();
-        solve(i+1,a,ans,nums);
+        for(int j=i;j<nums.size();j++){
+            a.push_back(nums[j]);
+            solve(j+1,a,ans,nums);
+            a.pop_back();
+        }
+        // a.push_back(nums[i]);
+        // solve(i+1,a,ans,nums);
+        // a.pop_back();
+        // solve(i+1,a,ans,nums);
     }
     vector<vector<int>> findSubsequences(vector<int>& nums) {
         int i=0;
         vector<vector<int>> ans;
         vector<int> a;
         solve(i,a,ans,nums);
-
-        // vector<vector<int>> f;
-        // int b=0;
-        // for(int i=0;i<ans.size();i++){
-        //     b=0;
-        //     for(int j=0;j<ans[i].size()-1;j++){
-        //         if(ans[i][j]>ans[i][j+1]){
-        //             b=1;
-        //             break;
-        //         }
-        //     }
-        //     if(b==0) f.push_back(ans[i]);
-        // }
 
         if(ans.size()==0) return ans;
         sort(ans.begin(),ans.end());
