@@ -1,49 +1,27 @@
 class Solution {
-private:
-    void solve1(vector<int>& candidates,vector<vector<int>>& ans,vector<int>& a,int target,int id){
-        if(target<0 || id==candidates.size()){
-            return;
-        }
-        if(target==0){
-            ans.push_back(a); 
-            return;
-        }
-        //pick
-        a.push_back(candidates[id]);
-        solve1(candidates,ans,a,target-candidates[id],id);
-        a.pop_back();
-
-        //skip
-        solve1(candidates,ans,a,target,id+1);
-    }
-    void solve2(vector<int>& candidates,vector<vector<int>>& ans,vector<int>& a,int target,int id){
-        if(target<0 || id==candidates.size()){
-            return;
-        }
-        if(target==0){
-            ans.push_back(a); 
-            return;
-        }
-        //pick
-        a.push_back(candidates[id]);
-        solve1(candidates,ans,a,target-candidates[id],id+1);
-        a.pop_back();
-
-        //skip
-        solve1(candidates,ans,a,target,id+1);
-    }
 public:
+    void solve(vector<int>& candidates,int target,vector<int>& a,int id,int s,vector<vector<int>>& ans){
+        if(id>=candidates.size() || s>=target){
+            if(s==target){
+                ans.push_back(a);
+                return;
+            }
+            return;
+        }
+
+        s+=candidates[id];
+        a.push_back(candidates[id]);
+        solve(candidates,target,a,id,s,ans);
+        a.pop_back();
+        s-=candidates[id];
+
+        solve(candidates,target,a,id+1,s,ans);
+    }
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
         vector<vector<int>> ans;
-        sort(candidates.begin(),candidates.end());
-        int id=0;
+        int s=0;
         vector<int> a;
-        solve1(candidates,ans,a,target,id);
-
-        // a.clear(); id=0;
-        // solve2(candidates,ans,a,target,id);
-
+        solve(candidates,target,a,0,s,ans);
         return ans;
-
     }
 };
