@@ -18,14 +18,21 @@ public:
         //PRATYUSH NARAIN
 
         int ans=nums[0];
+        int start=0; int end=0;
         int best_ending=nums[0];
         for(int i=1;i<nums.size();i++){
             int v1=nums[i];
             int v2=best_ending+nums[i];
+            if(v1>v2){
+                start=i;
+            }
             best_ending=max(v1,v2);
+            if(ans<best_ending){
+                end=i;
+            }
             ans=max(ans,best_ending);
         }
-        ans=max(ans,best_ending);
+        //ans=max(ans,best_ending);
         // if(ans<0) ans=0;
         return ans;
     }
