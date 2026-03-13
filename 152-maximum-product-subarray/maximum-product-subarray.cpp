@@ -13,7 +13,7 @@ public:
             bestmin=min(v1,min(v2,v3));
             bestmax=max(v1,max(v3,v2));
 
-            ans=max(ans,max(bestmin,bestmax));
+            ans=max(ans,bestmax);
         }
         return ans;
     }
