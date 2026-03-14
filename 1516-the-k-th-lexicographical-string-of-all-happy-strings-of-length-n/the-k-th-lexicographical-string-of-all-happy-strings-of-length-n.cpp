@@ -6,9 +6,12 @@ public:
             return;
         }
         for(int i=0;i<s.size();i++){
-            a.push_back(s[i]);
-            solve(n,a,ans,s);// this is not about subsequences it should choose any character at a particular call until the size becomes n
-            a.pop_back();
+            if(a.size()==0 || a.back()!=s[i]){
+                a.push_back(s[i]);
+                solve(n,a,ans,s);
+                // this is not about subsequences it should choose any character at a particular call until the size becomes n
+                a.pop_back();
+            }
         }
     }
     string getHappyString(int n, int k) {
