@@ -7,19 +7,17 @@ public:
         for(int i=0;i<s.size();i++){
             if(st.size()!=0 && st.top().first==s[i]){
                 if(st.top().second==k-1){     
-                    while(st.size()!=0 && st.top().first==s[i]){
-                        st.pop();
-                    }
+                    st.pop();
                 }
-                else st.push({s[i],st.top().second+1});
+                else st.top().second++;
             }
-            else{  
-                st.push({s[i],1});
-            }
+            else st.push({s[i],1});
         }
         string ans;
         while(st.size()!=0){
-            ans.push_back(st.top().first);
+            for(int i=0;i<st.top().second;i++){
+                ans.push_back(st.top().first);
+            }
             st.pop();
         }
         reverse(ans.begin(),ans.end());
