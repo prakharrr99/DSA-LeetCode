@@ -1,37 +1,26 @@
 class Solution {
 public:
-    int value(vector<vector<int>>& grid,int a,int b,int k){
-        vector<int> temp;
-        for(int i=a;i<k+a && i<grid.size();i++){
-            for(int j=b;j<k+b && j<grid[0].size();j++){
-                temp.push_back(grid[i][j]);
-            }
-        }
-        if(temp.size()!=1LL*k*k) return INT_MAX;
-        if(k==1) return 0;
-        int m=INT_MAX;
-        sort(temp.begin(),temp.end());
-        int flag=0;
-        for(int i=0;i<temp.size()-1;i++){
-            if(temp[i]!=temp[i+1]){
-                flag=1;
-                m=min(m,abs(temp[i]-temp[i+1]));
-            }
-        }
-        if(flag==0) return 0;
-        return m;
-    }
+    
     vector<vector<int>> minAbsDiff(vector<vector<int>>& grid, int k) {
         vector<vector<int>> ans;
-        for(int i=0;i<=grid.size()-k;i++){
-            vector<int> p;
-            for(int j=0;j<=grid[0].size()-k;j++){
-                int x=value(grid,i,j,k);
-                if(x!=INT_MAX)
-                    p.push_back(x);
+        for(int i=0;i<grid.size()-k+1;i++){
+            vector<int> temp;
+            for(int j=0;j<grid[0].size()-k+1;j++){
+                vector<int> t;
+                for(int a=i;a<i+k;a++){
+                    for(int b=j;b<j+k;b++){
+                        t.push_back(grid[a][b]);
+                    }
+                }
+                sort(t.begin(),t.end());
+                int v=INT_MAX;
+                for(int i=0;i<t.size()-1;i++){
+                    if(t[i]!=t[i+1]) v=min(v,t[i+1]-t[i]);
+                }
+                if(v==INT_MAX) v=0;
+                temp.push_back(v);
             }
-            if(p.size()!=0)
-                ans.push_back(p);
+            ans.push_back(temp);
         }
         return ans;
     }
