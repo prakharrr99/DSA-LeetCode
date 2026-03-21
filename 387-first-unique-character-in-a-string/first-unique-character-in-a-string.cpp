@@ -1,12 +1,13 @@
 class Solution {
 public:
     int firstUniqChar(string s) {
+        vector<int> f(26,0);
         unordered_map<char,int> m;
         for(int i=0;i<s.size();i++){
-            m[s[i]]++;
+            f[s[i]-'a']++;
         }
         for(int i=0;i<s.size();i++){
-            if(m[s[i]]==1){
+            if(f[s[i]-'a']==1){
                 return i;
             }
         }
