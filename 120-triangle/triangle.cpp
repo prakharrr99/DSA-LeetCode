@@ -11,21 +11,42 @@ public:
         return min(same_col,next_col);
     }
     int minimumTotal(vector<vector<int>>& triangle) {
-        vector<vector<int>> dp(triangle.size(),vector<int>(triangle.size(),-1));
+        // vector<vector<int>> dp(triangle.size(),vector<int>(triangle.size(),-1));
 
-        // return solve(triangle,0,0,dp);
+        // return solve(triangle,0,0,dp); TLE MEMOIZATION
 
+
+        //  TABULATION
+        // for(int j=0;j<triangle[triangle.size()-1].size();j++){
+        //     dp[triangle.size()-1][j]=triangle[triangle.size()-1][j];
+        // }
+
+        // for(int i=triangle.size()-2;i>=0;i--){ // is set the base case for n-1 thats why started from n-2
+        //     for(int j=triangle[i].size()-1;j>=0;j--){
+        //         int same_col=triangle[i][j]+dp[i+1][j];
+        //         int next_col=triangle[i][j]+dp[i+1][j+1];
+        //         dp[i][j]=min(same_col,next_col);
+        //     }
+        // }
+        // return dp[0][0]; 
+
+
+        //SPACE OPTIMIZATION
+
+        vector<int> prev(triangle.size(),-1);
         for(int j=0;j<triangle[triangle.size()-1].size();j++){
-            dp[triangle.size()-1][j]=triangle[triangle.size()-1][j];
+            prev[j]=triangle[triangle.size()-1][j];
         }
 
-        for(int i=triangle.size()-2;i>=0;i--){ // is set the base case for n-1 thats why started from n-2
+        for(int i=triangle.size()-2;i>=0;i--){ 
+            vector<int> cur(triangle.size(),-1);
             for(int j=triangle[i].size()-1;j>=0;j--){
-                int same_col=triangle[i][j]+dp[i+1][j];
-                int next_col=triangle[i][j]+dp[i+1][j+1];
-                dp[i][j]=min(same_col,next_col);
+                int same_col=triangle[i][j]+prev[j];
+                int next_col=triangle[i][j]+prev[j+1];
+                cur[j]=min(same_col,next_col);
             }
+            prev=cur;
         }
-        return dp[0][0]; 
+        return prev[0];
     }
-};
+};   
