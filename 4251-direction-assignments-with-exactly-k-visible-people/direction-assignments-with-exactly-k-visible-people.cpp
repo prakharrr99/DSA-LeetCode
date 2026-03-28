@@ -10,9 +10,7 @@ public:
     }
     long long power(long long n,long long m){
         long long ans = 1;
-        
-        n = n%M;
-        
+        n = n%M;   
         while(m>0){
             if(m%2 == 1) ans = (ans*n)%M;
             n = (n*n)%M;
