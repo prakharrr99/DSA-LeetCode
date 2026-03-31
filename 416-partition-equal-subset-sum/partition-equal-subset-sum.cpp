@@ -16,7 +16,7 @@ public:
         int s=0;
         for(int i=0;i<nums.size();i++) s+=nums[i];
         if(s&1) return false;
-        vector<vector<int>> dp(nums.size(),vector<int>(s+1,-1));
+        vector<vector<int>> dp(nums.size(),vector<int>(s,-1));
         s=s/2;
         return 2<=solve(nums,nums.size()-1,s,dp);
     }
