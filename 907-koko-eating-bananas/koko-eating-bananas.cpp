@@ -1,31 +1,29 @@
 class Solution {
-private:
-    long long sum(vector<int>& piles,int a){
-        long long s=0;
-        for(int i=0;i<piles.size();i++){
-            s+=(piles[i]+a-1)/a;
-        }
-        return s;
-    }
 public:
-    int minEatingSpeed(vector<int>& piles, int h) {
-        int a=0;
-        for(int i=1;i<piles.size();i++){
-            if(piles[a]<piles[i]) a=i;
+    bool valid(vector<int>& piles, int h,long long v){
+        long long a=0;
+        for(int i=0;i<piles.size();i++){
+            if(piles[i]%v!=0){
+                a+=(piles[i]/v+1);
+            }
+            else a+=(piles[i]/v);
         }
-        int j=piles[a];
-        int i=1;
-        int mid=i+(j-i)/2; int ans=j;
-        while(j>=i){
-            long long s=sum(piles,mid);
-            if(s<=h){
+        return a<=h;
+    }
+    int minEatingSpeed(vector<int>& piles, int h) {
+        long long low=1;
+        long long high=0;
+        for(int i=0;i<piles.size();i++) high+=piles[i];
+
+        int ans=-1;
+        while(high>=low){
+            long long mid=low+(high-low)/2;
+
+            if(valid(piles,h,mid)){
                 ans=mid;
-                j=mid-1;
+                high=mid-1;
             }
-            else if(s>h){
-                i=mid+1;
-            }
-            mid=i+(j-i)/2;
+            else low=mid+1;
         }
         return ans;
     }
