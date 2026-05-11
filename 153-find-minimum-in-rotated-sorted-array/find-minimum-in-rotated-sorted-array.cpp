@@ -1,8 +1,7 @@
 class Solution {
 public:
     int findMin(vector<int>& nums) {
-
-        if(nums[nums.size()-1]>nums[0]) return nums[0];
+        if(nums[0]<nums[nums.size()-1]) return nums[0];
         if(nums.size()==1) return nums[0];
         
         int low=0;
