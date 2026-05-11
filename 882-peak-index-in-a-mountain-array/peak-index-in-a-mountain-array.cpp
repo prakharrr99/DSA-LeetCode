@@ -7,10 +7,11 @@ public:
         while(high>=low){
             int mid=low+(high-low)/2;
             if(arr[mid]<arr[mid+1]){
+                ans=mid+1;
                 low=mid+1;
             }
             else{
-                ans=mid;
+                // ans=mid;
                 high=mid-1;
             }
         }
