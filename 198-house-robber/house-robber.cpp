@@ -14,8 +14,10 @@ public:
 
         return dp[id]=max(pick,notpick);
     }
+    
     int rob(vector<int>& nums) {
-        vector<int> dp(nums.size()+1,-1);
+        vector<int> dp(nums.size(),-1);
+
         return solve(0,nums,dp);
     }
 };
