@@ -1,52 +1,29 @@
 class Solution {
 public:
-    int solve(vector<vector<int>>& triangle,int i,int j,vector<vector<int>>& dp){
-        // if(i>=triangle.size() || j>= triangle[i].size()) return INT_MAX; // not required because we will not go out of boundary
+    int solve(int i,int j,vector<vector<int>>& triangle,vector<vector<int>>& dp){
         if(i==triangle.size()-1) return triangle[i][j];
+        if(j>=triangle[i].size()) return 1e7;
 
         if(dp[i][j]!=-1) return dp[i][j];
-        int same_col=triangle[i][j]+solve(triangle,i+1,j,dp);
-        int next_col=triangle[i][j]+solve(triangle,i+1,j+1,dp);
 
-        return min(same_col,next_col);
+        return dp[i][j]=min(solve(i+1,j,triangle,dp)+triangle[i][j],solve(i+1,j+1,triangle,dp)+triangle[i][j]);
     }
     int minimumTotal(vector<vector<int>>& triangle) {
-        // vector<vector<int>> dp(triangle.size(),vector<int>(triangle.size(),-1));
+        vector<vector<int>> dp(triangle.size(),vector<int>(triangle.size(),-1));
 
-        // return solve(triangle,0,0,dp); TLE MEMOIZATION
-
-
-        //  TABULATION
-        // for(int j=0;j<triangle[triangle.size()-1].size();j++){
-        //     dp[triangle.size()-1][j]=triangle[triangle.size()-1][j];
-        // }
-
-        // for(int i=triangle.size()-2;i>=0;i--){ // is set the base case for n-1 thats why started from n-2
-        //     for(int j=triangle[i].size()-1;j>=0;j--){
-        //         int same_col=triangle[i][j]+dp[i+1][j];
-        //         int next_col=triangle[i][j]+dp[i+1][j+1];
-        //         dp[i][j]=min(same_col,next_col);
-        //     }
-        // }
-        // return dp[0][0]; 
-
-
-        //SPACE OPTIMIZATION
-
-        vector<int> prev(triangle.size(),-1);
-        for(int j=0;j<triangle[triangle.size()-1].size();j++){
-            prev[j]=triangle[triangle.size()-1][j];
+        for(int i=0;i<triangle.size();i++){
+            dp[triangle.size()-1][i]=triangle[triangle.size()-1][i];
         }
-
-        for(int i=triangle.size()-2;i>=0;i--){ 
-            vector<int> cur(triangle.size(),-1);
+        
+        for(int i=triangle.size()-2;i>=0;i--){
             for(int j=triangle[i].size()-1;j>=0;j--){
-                int same_col=triangle[i][j]+prev[j];
-                int next_col=triangle[i][j]+prev[j+1];
-                cur[j]=min(same_col,next_col);
+                int up=dp[i+1][j]+triangle[i][j];
+                int adj=INT_MAX;
+                if(j!=triangle[i+1].size()-1) adj=dp[i+1][j+1]+triangle[i][j];
+                dp[i][j]=min(up,adj);
             }
-            prev=cur;
         }
-        return prev[0];
+        return dp[0][0];
+        return solve(0,0,triangle,dp);
     }
-};   
+};
