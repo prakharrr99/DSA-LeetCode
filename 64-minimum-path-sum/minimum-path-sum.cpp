@@ -1,29 +1,27 @@
 class Solution {
 public:
-    long long solve(vector<vector<int>>& grid,int i,int j,vector<vector<int>>& dp){
-        if(i<0 || j<0) return INT_MAX;
-        if(i==0 && j==0) return grid[i][j];
-
-        if(dp[i][j]!=-1) return dp[i][j];
-
-        return dp[i][j]=min(solve(grid,i-1,j,dp)+grid[i][j],solve(grid,i,j-1,dp)+grid[i][j]);
+    int solve(int m,int n,vector<vector<int>>& grid,vector<vector<int>>& dp){
+        if(m==0 && n==0) return grid[0][0];
+        if(m<0 || n<0) return 1e7;
+        if(dp[m][n]!=-1) return dp[m][n];
+        return dp[m][n]=min(solve(m-1,n,grid,dp)+grid[m][n],solve(m,n-1,grid,dp)+grid[m][n]);
     }
     int minPathSum(vector<vector<int>>& grid) {
-        vector<vector<int>> dp(grid.size(),vector<int>(grid[0].size(),-1)); 
-
-        // return solve(grid,grid.size()-1,grid[0].size()-1,dp);
-
-        for(int i=0;i<dp.size();i++){
-            for(int j=0;j<dp[0].size();j++){
-                if(i==0 && j==0) dp[i][j]=grid[i][j];
-                else{
-                    int up=INT_MAX,l=INT_MAX;
-                    if(i>0) up=grid[i][j]+dp[i-1][j];
-                    if(j>0) l=grid[i][j]+dp[i][j-1];
-                    dp[i][j]=min(l,up);
-                }
+        int m=grid.size();
+        int n=grid[0].size();
+        vector<vector<int>> dp(m,vector<int>(n,-1));
+        dp[0][0]=grid[0][0];
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(i==0 && j==0) continue;
+                int left=1e7;
+                int up=1e7;
+                if(i!=0) left=dp[i-1][j];
+                if(j!=0) up=dp[i][j-1];
+                dp[i][j]=min(left,up)+grid[i][j];
             }
         }
-        return dp[dp.size()-1][dp[0].size()-1];
+        return dp[m-1][n-1];
+        return solve(m-1,n-1,grid,dp);
     }
 };
