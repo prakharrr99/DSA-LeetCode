@@ -1,23 +1,25 @@
 class Solution {
-private:
-    int div(int a){
-        int c=0; int s=0;
-        for(int i=1;i<=a;i++){
-            if(c>4) break;
-            if(a%i==0){
-                s+=i; c++;
-            }
-        }
-        if(c==4) return s;
-        return 0;
-    }
 public:
     int sumFourDivisors(vector<int>& nums) {
-        int ans=0;
+        int s=0;
         for(int i=0;i<nums.size();i++){
-            int a=div(nums[i]);
-            ans+=a;
+            int a=0;
+            int c=0;
+            for(int j=1;j*j<=nums[i];j++){
+                if(nums[i]%j==0){
+                    if(j==nums[i]/j){
+                        c+=1;
+                        a+=j;
+                    } 
+                    else{
+                        c+=2;
+                        a+=j;
+                        a+=nums[i]/j;
+                    }
+                }
+            }
+            if(c==4) s+=a;
         }
-        return ans;
+        return s;
     }
 };
