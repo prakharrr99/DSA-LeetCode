@@ -12,7 +12,23 @@ public:
         return dp[i]=ans;
     }
     int jump(vector<int>& nums) {
+        if(nums.size()==1) return 0;
+
         vector<int> dp(nums.size(),-1);
+
+        dp[nums.size()-1]=0;
+        for(int i=0;i<nums.size()-1;i++) if(nums[i]==0) dp[i]=1e5;
+        
+        int n=nums.size();
+        for(int i=nums.size()-2;i>=0;i--){
+            int ans=1e5;
+            for(int j=1;j<=nums[i];j++){
+                ans=min(ans,dp[min(n-1,i+j)]+1);
+            }
+            dp[i]=ans;
+        }
+        return dp[0];
+
         return solve(nums,0,dp);
     }
 };
