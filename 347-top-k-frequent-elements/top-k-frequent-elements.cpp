@@ -1,23 +1,28 @@
 class Solution {
 public:
-    vector<int> topKFrequent(vector<int>& nums, int k) {
-        vector<int> ans;
-        unordered_map<int,int> m;
-        for(auto it:nums){
-            m[it]++;
+    class cmp {
+    public:
+        bool operator()(const pair<int,int>& a,
+                        const pair<int,int>& b) const {
+            if(a.second != b.second)
+                return a.second < b.second;
+
+            return a.first > b.first;
         }
-        int maxi=0;
-        for(int i=1;i<=k;i++){
-            auto iit=m.begin();
-            for(auto it=m.begin();it!=m.end();it++){
-                if(maxi<it->second){
-                    maxi=it->second;
-                    iit=it;
-                }
-            }
-            ans.push_back(iit->first); 
-            iit->second=0;
-            maxi=0;
+    };
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int,int> m;
+        for(int i=0;i<nums.size();i++) m[nums[i]]++;
+        priority_queue<pair<int,int>,vector<pair<int,int>>,cmp> pq;
+
+        for(auto it:m){
+            pq.push({it.first,it.second});
+        }
+
+        vector<int> ans;
+        for(int i=0;i<k;i++){
+            ans.push_back(pq.top().first);
+            pq.pop();
         }
         return ans;
     }
