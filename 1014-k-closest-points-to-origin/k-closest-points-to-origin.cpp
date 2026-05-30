@@ -1,15 +1,27 @@
 class Solution {
 public:
     vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
-        vector<vector<int>> ans;
-        vector<pair<double,int>> store;
+
+        auto cmp=[](pair<int,int>& a,pair<int,int>& b){
+            float d=sqrt(1.0*a.first*a.first+1.0*a.second*a.second);
+            float d2=sqrt(1.0*b.first*b.first+1.0*b.second*b.second);
+            return d>d2;
+        };
+        priority_queue<pair<int,int>,vector<pair<int,int>>,decltype(cmp)> pq(cmp);
+        
         for(int i=0;i<points.size();i++){
-            double val=sqrt(1.0*points[i][0]*points[i][0]+1.0*points[i][1]*points[i][1]);
-            store.push_back({val,i});
+            pair<int,int> a;
+            a={points[i][0],points[i][1]};
+            pq.push(a);
         }
-        sort(store.begin(),store.end());
+
+        vector<vector<int>> ans;
         for(int i=0;i<k;i++){
-            ans.push_back({points[store[i].second][0],points[store[i].second][1]});
+            vector<int> t;
+            t.push_back(pq.top().first);
+            t.push_back(pq.top().second);
+            pq.pop();
+            ans.push_back(t);
         }
         return ans;
     }
