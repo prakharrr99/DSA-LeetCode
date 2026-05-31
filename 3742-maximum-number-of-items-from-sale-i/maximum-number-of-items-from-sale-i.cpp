@@ -14,16 +14,16 @@ public:
         if(dp[i][budget]!=-1) return dp[i][budget];
 
         int take_f=0;
-        int take_all=0;
+        int take_same=0;
 
-        if(budget>=items[i][1]) take_all=fact[items[i][0]];
+        if(budget>=items[i][1]) take_same=fact[items[i][0]];
 
         if(budget>=items[i][1]){
             take_f=solve(items,budget-items[i][1],i-1,fact,dp)+fact[items[i][0]]+1;
-            take_all=solve(items,budget-items[i][1],i,fact,dp)+1;
+            take_same=solve(items,budget-items[i][1],i,fact,dp)+1;
         }
         int no_take=solve(items,budget,i-1,fact,dp);
-        return dp[i][budget]=max(max(take_f,no_take),take_all);
+        return dp[i][budget]=max(max(take_f,no_take),take_same);
     }
     int maximumSaleItems(vector<vector<int>>& items, int budget) {
         
