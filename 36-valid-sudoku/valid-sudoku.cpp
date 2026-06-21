@@ -1,33 +1,38 @@
 class Solution {
-private:
-    bool isvalid(vector<vector<char>>& board,int r,int c,int n){
-        //ROW
-        int count=0;
-        for(int i=0;i<9;i++){
-            if(n==board[i][c]) count++;
+public:
+    bool check(vector<vector<char>>& board,int a,int b,char ch){
+        int n=board.size();
+        for(int r=0;r<n;r++){
+            if(board[r][b]==ch && r!=a) return false;
         }
-        if(count>1) return false;
-
-        //COLOUMN
-        for(int i=0;i<9;i++){
-            if(n==board[r][i]) count++;
+        for(int c=0;c<n;c++){
+            if(board[a][c]==ch && c!=b) return false;
         }
-        if(count>2) return false;
+        int sr=a/3;
+        int sc=b/3;
+        if(a/3==0) sr=0;
+        else if(a/3==1) sr=3;
+        else sr=6;
 
-        //BOX
-        
-        for(int i=(r/3)*3;i<((r/3)*3)+3;i++){
-            for(int j=(c/3)*3;j<((c/3)*3)+3;j++){
-                if(board[i][j]==n) count++;
+        if(b/3==0) sc=0;
+        else if(b/3==1) sc=3;
+        else sc=6;
+
+        for(int i=sr;i<sr+3;i++){
+            for(int j=sc;j<sc+3;j++){
+                if(i==a && j==b) continue;
+                if(board[i][j]==ch) return false;
             }
         }
-        return count==3;
+        return true;
     }
-public:
     bool isValidSudoku(vector<vector<char>>& board) {
-        for(int i=0;i<9;i++){
-            for(int j=0;j<9;j++){
-                if(board[i][j]!='.' && !isvalid(board,i,j,board[i][j])) return false;
+        int n=board.size();
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(board[i][j]!='.'){
+                    if(!check(board,i,j,board[i][j])) return false;
+                }
             }
         }
         return true;
