@@ -20,22 +20,24 @@ public:
     }
     int maxProfit(vector<int>& prices) {
 
-        vector<int> prev(2,-1);
-        prev[0]=prices[prices.size()-1];
-        prev[1]=0;
+        //SPACE OPTIMIZATION
+
+        vector<int> ahead(2,-1);
+        ahead[0]=prices[prices.size()-1];
+        ahead[1]=0;
         for(int i=prices.size()-2;i>=0;i--){
-            int c0=max(prices[i]+prev[1],0+prev[0]);
+            int c0=max(prices[i]+ahead[1],0+ahead[0]);
 
-            int c1=max(-prices[i]+prev[0],0+prev[1]);
+            int c1=max(-prices[i]+ahead[0],0+ahead[1]);
 
-            prev[0]=c0;
-            prev[1]=c1;
+            ahead[0]=c0;
+            ahead[1]=c1;
         }
-        return prev[1];
+        return ahead[1];
 
 
 
-
+        //RECURSION  MEMOIZATION  TABULATION
 
         vector<vector<int>> dp(prices.size(),vector<int>(2,-1));
 
