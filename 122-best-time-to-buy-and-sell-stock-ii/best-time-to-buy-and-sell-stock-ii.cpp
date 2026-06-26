@@ -20,6 +20,23 @@ public:
     }
     int maxProfit(vector<int>& prices) {
 
+        vector<int> prev(2,-1);
+        prev[0]=prices[prices.size()-1];
+        prev[1]=0;
+        for(int i=prices.size()-2;i>=0;i--){
+            int c0=max(prices[i]+prev[1],0+prev[0]);
+
+            int c1=max(-prices[i]+prev[0],0+prev[1]);
+
+            prev[0]=c0;
+            prev[1]=c1;
+        }
+        return prev[1];
+
+
+
+
+
         vector<vector<int>> dp(prices.size(),vector<int>(2,-1));
 
         dp[prices.size()-1][1]=0;
@@ -31,6 +48,7 @@ public:
             dp[i][1]=max(-prices[i]+dp[i+1][0],0+dp[i+1][1]);
         }
         return dp[0][1];
+
         return f(prices,0,1,dp);
     }
 };
