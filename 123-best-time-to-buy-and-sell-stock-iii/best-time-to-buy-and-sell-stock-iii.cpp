@@ -15,6 +15,28 @@ public:
         return 0;
     }
     int maxProfit(vector<int>& prices) {
+
+        //SPACE OPTIMIZATION
+        vector<vector<int>> ahead(2,vector<int>(3,-1));
+        ahead[1][2]=0;
+        ahead[0][2]=0;
+        ahead[0][0]=ahead[0][1]=ahead[1][0]=ahead[1][1]=0;
+
+        for(int i=prices.size()-1;i>=0;i--){
+            vector<vector<int>> temp=ahead;
+            for(int j=1;j>=0;j--){
+                for(int k=1;k>=0;k--){
+                    if(j==1) temp[j][k]=max(-prices[i]+ahead[0][k],0+ahead[1][k]);
+                    else temp[j][k]=max(prices[i]+ahead[1][k+1],0+ahead[0][k]);
+                }
+            }
+            ahead=temp;
+        }
+        return ahead[1][0];
+
+
+
+
         vector<vector<vector<int>>> dp(prices.size()+1,vector<vector<int>>(2,vector<int>(3,-1)));
 
         for(int i=0;i<prices.size();i++){
