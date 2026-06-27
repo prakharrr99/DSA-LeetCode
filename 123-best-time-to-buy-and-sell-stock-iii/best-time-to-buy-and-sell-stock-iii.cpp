@@ -24,7 +24,7 @@ public:
 
         for(int i=prices.size()-1;i>=0;i--){
             vector<vector<int>> temp=ahead;
-            for(int j=1;j>=0;j--){
+            for(int j=0;j<2;j++){
                 for(int k=1;k>=0;k--){
                     if(j==1) temp[j][k]=max(-prices[i]+ahead[0][k],0+ahead[1][k]);
                     else temp[j][k]=max(prices[i]+ahead[1][k+1],0+ahead[0][k]);
