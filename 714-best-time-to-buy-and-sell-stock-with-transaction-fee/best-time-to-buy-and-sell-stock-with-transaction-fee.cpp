@@ -10,8 +10,8 @@ public:
         return dp[i][buy]=max(prices[i]+f(prices,i+1,1,fee,dp)-fee,0+f(prices,i+1,0,fee,dp));
     }
     int maxProfit(vector<int>& prices, int fee) {
-        // //SPACE OPTIMIZATION
-        // // here our curr state is dependent on 2 states next and next to next because it has i+1 and i+2 thats why
+        //SPACE OPTIMIZATION
+        // here our curr state is dependent on 2 states next and next to next because it has i+1 and i+2 thats why
         // vector<int> next2(2,0);
         // vector<int> next1(2,0);
         // vector<int> curr(2,0);
@@ -31,23 +31,23 @@ public:
 
 
 
-        // //TABULATION
-        // vector<vector<int>> dp(prices.size()+2,vector<int>(2,0));
+        //TABULATION
+        vector<vector<int>> dp(prices.size()+1,vector<int>(2,0));
 
-        // for(int i=prices.size()-1;i>=0;i--){
-        //     for(int j=0;j<2;j++){
-        //         if(j==1){
-        //            dp[i][j]=max(-prices[i]+dp[i+1][0],0+dp[i+1][1]);
-        //         }
-        //         else dp[i][j]=max(prices[i]+dp[i+2][1],0+dp[i+1][0]);
-        //     }
-        // }
-        // return dp[0][1];
+        for(int i=prices.size()-1;i>=0;i--){
+            for(int j=0;j<2;j++){
+                if(j==1){
+                   dp[i][j]=max(-prices[i]+dp[i+1][0],0+dp[i+1][1]);
+                }
+                else dp[i][j]=max(prices[i]+dp[i+1][1]-fee,0+dp[i+1][0]);
+            }
+        }
+        return dp[0][1];
 
 
         // RECURSION AND MEMOIZATION
 
-        vector<vector<int>> dp(prices.size()+1,vector<int>(2,-1));
+        // vector<vector<int>> dp(prices.size()+1,vector<int>(2,-1));
         return f(prices,0,1,fee,dp);
     }
 };
