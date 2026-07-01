@@ -1,31 +1,27 @@
 class Solution {
-
 public:
     bool checkInclusion(string s1, string s2) {
-        if(s2.size()<s1.size()) return false;
-        vector<int> f(26,0);
-        for(int i=0;i<s1.size();i++){
-            f[s1[i]-'a']++;
-        }
-        int i=0; int j=0;
-        vector<int> f1(26,0);
-        while(j<s1.size()){
-            
-            f1[s2[j]-'a']++;
-            j++;
-        }
+        if(s1.size()>s2.size()) return false;
 
-        // if(f==f1) return true;
-        // f1[s2[i]-'a']--;
-        // i++;
-        while(j<s2.size()){
-            if(f==f1) return true;
-            f1[s2[j]-'a']++;
-            f1[s2[i]-'a']--;
-            i++;
-            j++;
+        vector<int> f1(26,0);
+        vector<int> f2(26,0);
+
+        for(auto it:s1) f1[it-'a']++;
+
+        int i=0;
+        int j=0;
+        for(j=0;j<s1.size();j++){
+            f2[s2[j]-'a']++;
         }
-        if(f==f1) return true;
+        if(f1==f2) return true;
+
+        while(j<s2.size()){
+            f2[s2[i++]-'a']--;
+            f2[s2[j++]-'a']++;
+
+            if(f1==f2) return true;
+            
+        }
         return false;
     }
 };
