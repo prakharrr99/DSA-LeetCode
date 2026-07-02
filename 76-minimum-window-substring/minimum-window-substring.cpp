@@ -1,44 +1,52 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
-        if(s.size()<t.size()) return "";
+        if(t.size()>s.size()) return "";
 
-        vector<int> f(256,0);
-        for(int i=0;i<t.size();i++){
-            f[t[i]]++;
-        }
-
-        int i=0; int j=0;
-        int count=0;
-        int ans=INT_MAX;
-        int startidx=-1;
+        vector<int> mt(256,0);
+        for(auto it:t) mt[it]++;
+         
+        vector<int> ms(256,0);
+        
+        int i=0;int j=0;
+        int start=-1;
+        int len=INT_MAX;
         while(j<s.size()){
-            while(count==t.size()){
-                if(ans>j-i){
-                    ans=j-i;
-                    startidx=i;
+            if(mt[s[j]]!=0){
+                ms[s[j]]++;
+            }
+            int c=0;
+            for(int k=0;k<256;k++){
+                if(ms[k]>=mt[k]) continue;
+                else{
+                    c=1;
+                    break;
                 }
-                f[s[i]]++;
-                if(f[s[i]]>0) count--;
-                i++;
             }
-            if(f[s[j]]>0){
-                count++; 
+            if(c==0){
+                if(len> j-i+1){
+                    len=j-i+1;
+                    start=i;
+                }
+                while(i<s.size() && (mt[s[i]]==0 || (mt[s[i]]!=0 && ms[s[i]]>mt[s[i]]) )){
+                    if(mt[s[i]]!=0) ms[s[i]]--;
+                    i++;
+                    if(len>j-i+1){
+                        len=j-i+1;
+                        start=i;
+                    }
+                }
             }
-            f[s[j]]--;
             j++;
         }
-        while(count==t.size()){
-            if(ans>j-i){
-                ans=j-i;
-                startidx=i;
-            }
-            f[s[i]]++;
-            if(f[s[i]]>0) count--;
-            i++;
+
+        string s1;
+
+        if(start==-1) return s1;
+
+        for(int k=start;k<start+len && k<s.size();k++){
+            s1.push_back(s[k]);
         }
-        
-        if(ans==INT_MAX) return "";
-        return s.substr(startidx, ans);
+        return s1;
     }
 };
