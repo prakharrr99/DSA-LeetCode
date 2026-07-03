@@ -1,25 +1,28 @@
 class Solution {
 public:
     vector<int> maxSlidingWindow(vector<int>& nums, int k) {
-        int n = nums.size();
-        vector<int> left(n), right(n), ans;
-
-        left[0] = nums[0];
-        for (int i = 1; i < n; i++) {
-            if (i % k == 0) left[i] = nums[i];
-            else left[i] = max(left[i - 1], nums[i]);
+        vector<int> ans;
+        deque<int> q;
+        int i=0;
+        int j=0;
+        for(j=0;j<k;j++){
+            while(!q.empty() && nums[q.back()]<nums[j]) q.pop_back();
+            if(q.empty() || nums[q.back()]>=nums[j]){
+                q.push_back(j);
+            }
         }
-
-        right[n - 1] = nums[n - 1];
-        for (int i = n - 2; i >= 0; i--) {
-            if ((i + 1) % k == 0) right[i] = nums[i];
-            else right[i] = max(right[i + 1], nums[i]);
+        ans.push_back(nums[q.front()]);
+        i++;
+        while(j<nums.size()){
+            while(!q.empty() && i>q.front()) q.pop_front();
+            while(!q.empty() && nums[q.back()]<nums[j]) q.pop_back();
+            if(q.empty() || nums[q.back()]>=nums[j]){
+                q.push_back(j);
+            }
+            ans.push_back(nums[q.front()]);
+            j++;
+            i++;
         }
-
-        for (int i = 0; i <= n - k; i++) {
-            ans.push_back(max(right[i], left[i + k - 1]));
-        }
-
         return ans;
     }
 };
