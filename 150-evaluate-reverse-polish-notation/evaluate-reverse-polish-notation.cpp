@@ -1,36 +1,25 @@
 class Solution {
 public:
     int evalRPN(vector<string>& tokens) {
-        stack<string> s;
-        stack<string> op;
-        
-        for(int i=tokens.size()-1;i>=0;i--){
-            if(tokens[i]=="+" || tokens[i]=="-" || tokens[i]=="*" || tokens[i]=="/") op.push(tokens[i]);
-        }
-        for(int i=0;i<tokens.size();i++){
-            if(tokens[i]=="+" || tokens[i]=="-" || tokens[i]=="*" || tokens[i]=="/"){
-                string str=op.top(); op.pop();
-                int a=stoi(s.top()); s.pop();
-                int b=stoi(s.top()); s.pop();
-                if(str=="+"){
-                    string c=to_string(a+b);
-                    s.push(c);
-                }
-                else if(str=="-"){
-                    string c=to_string(b-a);
-                    s.push(c);
-                }
-                else if(str=="*"){
-                    string c=to_string(a*b);
-                    s.push(c);
-                }
-                else{
-                    string c=to_string(b/a);
-                    s.push(c);
-                }
+        stack<string> st;
+        for(auto it:tokens){
+            if(it=="+" || it=="-" || it=="*" || it=="/"){
+                int first=stoi(st.top());
+                st.pop();
+                int second=stoi(st.top());
+                st.pop();
+                int val=-1;
+                if(it=="+") val=(second+first);
+                else if(it=="-") val=(second-first);
+                else if(it=="/") val=(second/first);
+                else val=(second*first);
+
+                st.push(to_string(val));
             }
-            else s.push(tokens[i]);
+            else st.push(it);
         }
-        return stoi(s.top());
+        string p=st.top();
+        int balue=stoi(p);
+        return balue;
     }
 };
