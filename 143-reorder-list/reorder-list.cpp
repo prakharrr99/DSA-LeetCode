@@ -10,26 +10,73 @@
  */
 class Solution {
 public:
-    void reorderList(ListNode* head) {
-        
-        if(head==NULL || head->next==NULL || head->next->next==NULL) return;
-        ListNode* temp=head;
-        ListNode* temp2=head;
-        ListNode* temp3=head;
+    ListNode* mid(ListNode* head){
+        if(head==NULL|| head->next==NULL) return head;
+        ListNode* f=head;
+        ListNode* s=head;
 
-        while(temp2->next->next!=NULL){ // EK BAAR REORDER KIYA
-            temp2=temp2->next;
+        while(f!=NULL && f->next!=NULL){
+            s=s->next;
+            f=f->next->next;
         }
-        temp3=temp2;
-        temp2=temp2->next;
-        temp3->next=NULL;
+        return s;
+    }
+    ListNode* reverse(ListNode* head){
+        if(head==NULL || head->next==NULL) return head;
+        ListNode* p=NULL;
+        ListNode* c=head;
+        ListNode* n=head;
+        while(c!=NULL){
+            n=c->next;
+            c->next=p;
+            p=c;
+            c=n;
+        }
+        return p;
+    }
+    void reorderList(ListNode* head) {
 
-        temp2->next=temp->next;
-        temp->next=temp2;
+        if(head==NULL || head->next==NULL || head->next->next==NULL) return ;
 
-        temp2=temp2->next;
-        temp=temp2;
-        reorderList(temp2);
-        return;
+        ListNode* h1=head;
+        ListNode* m=mid(head);
+        ListNode* h2=m->next;
+        m->next=NULL;
+
+        h2=reverse(h2);
+
+        if(h2==NULL) return ;
+        
+        ListNode* newhead=h1;
+        ListNode* tail=newhead;
+
+        h1=h1->next;
+        tail->next=h2;
+        tail=tail->next;
+        h2=h2->next;
+
+        while(h1!=NULL && h2!=NULL){
+            tail->next=h1;
+            h1=h1->next;
+            tail=tail->next;
+            tail->next=h2;
+            h2=h2->next;
+            tail=tail->next;
+        }
+        
+        while(h1!=NULL){
+            tail->next=h1;
+            h1=h1->next;
+            tail=tail->next;
+        }
+
+        while(h2!=NULL){
+            tail->next=h2;
+            h2=h2->next;
+            tail=tail->next;
+        }
+
+        tail->next=NULL;
+        head=newhead;
     }
 };
