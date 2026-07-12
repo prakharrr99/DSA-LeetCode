@@ -9,40 +9,49 @@
  * };
  */
 class Solution {
-private:
-    void insertattail(ListNode*& head,ListNode*& tail,int data){
-        ListNode* temp=new ListNode(data);
-        if(head==NULL){
-            head=temp;
-            tail=temp;
-        }
-        else{
-            tail->next=temp;
-            tail=temp;
-        }
-    }
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        ListNode* head=NULL;
+        if(list1==NULL) return list2;
+        if(list2==NULL) return list1;
+
+        ListNode* newhead=NULL;
         ListNode* tail=NULL;
         while(list1!=NULL && list2!=NULL){
-            if(list1->val > list2->val){
-                insertattail(head,tail,list2->val);
+            if(list1->val>list2->val){
+                if(newhead==NULL){
+                    newhead=list2;
+                    tail=newhead;
+                }
+                else{
+                    tail->next=list2;
+                    tail=tail->next;
+                }
                 list2=list2->next;
             }
             else{
-                insertattail(head,tail,list1->val);
+                if(newhead==NULL){
+                    newhead=list1;
+                    tail=newhead;
+                }
+                else{
+                    tail->next=list1;
+                    tail=tail->next;
+                }
                 list1=list1->next;
             }
         }
         while(list1!=NULL){
-            insertattail(head,tail,list1->val);
+            tail->next=list1;
+            tail=tail->next;
             list1=list1->next;
         }
         while(list2!=NULL){
-            insertattail(head,tail,list2->val);
+            tail->next=list2;
+            tail=tail->next;
             list2=list2->next;
         }
-        return head;
+        tail->next=NULL;
+
+        return newhead;
     }
 };
