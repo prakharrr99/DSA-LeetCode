@@ -10,44 +10,84 @@
  */
 class Solution {
 public:
-    void insertattail(ListNode*& head,ListNode*& tail,int val){
-        ListNode* temp=new ListNode(val);
-        if(head==NULL){
-            head=tail=temp;
-            return ;
+    ListNode* reverse(ListNode* head){
+        if(head==NULL || head->next==NULL) return head;
+
+        ListNode* p=NULL;
+        ListNode* c=head;
+        ListNode* n=head;
+        while(c!=NULL){
+            n=c->next;
+            c->next=p;
+            p=c;
+            c=n;
         }
-        tail->next=temp;
-        tail=temp;
-        return;
+        return p;
     }
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        ListNode* head=NULL;
-        ListNode* tail=NULL;
-        ListNode* curr1=l1;
-        ListNode* curr2=l2;
-        int carry=0; int sum=0;
-        while(curr1!=NULL && curr2!=NULL){
-            sum=curr1->val+curr2->val+carry;
-            carry=sum/10;
-            insertattail(head,tail,sum%10);
-            curr1=curr1->next;
-            curr2=curr2->next;
+        // l1=reverse(l1);
+        // l2=reverse(l2);
+
+        if(l1==NULL) return l2;
+        if(l2==NULL) return l1;
+
+        ListNode* newhead=NULL;
+        ListNode* tail=newhead;
+
+        int c=0;
+        while(l1!=NULL && l2!=NULL){
+            int v=l1->val+l2->val+c;
+            c=v/10;
+            v=v%10;
+            ListNode* n=new ListNode(v);
+            if(newhead==NULL){
+                newhead=n;
+                tail=newhead;
+            }
+            else{
+                tail->next=n;
+                tail=tail->next;
+            }
+            l1=l1->next;
+            l2=l2->next;
         }
-        while(curr1!=NULL){
-            sum=curr1->val+carry;
-            carry=sum/10;
-            insertattail(head,tail,sum%10);
-            curr1=curr1->next;
+
+        while(l1!=NULL){
+            int v=l1->val+c;
+            c=v/10;
+            v=v%10;
+            ListNode* n=new ListNode(v);
+            if(newhead==NULL){
+                newhead=n;
+                tail=newhead;
+            }
+            else{
+                tail->next=n;
+                tail=tail->next;
+            }
+            l1=l1->next;
         }
-        while(curr2!=NULL){
-            sum=curr2->val+carry;
-            carry=sum/10;
-            insertattail(head,tail,sum%10);
-            curr2=curr2->next;
+        while(l2!=NULL){
+            int v=l2->val+c;
+            c=v/10;
+            v=v%10;
+            ListNode* n=new ListNode(v);
+            if(newhead==NULL){
+                newhead=n;
+                tail=newhead;
+            }
+            else{
+                tail->next=n;
+                tail=tail->next;
+            }
+            l2=l2->next;
         }
-        if(carry!=0){
-            insertattail(head,tail,carry);
+        if(c!=0){
+            ListNode* n=new ListNode(c);
+            tail->next=n;
+            
         }
-        return head;
+        // newhead=reverse(newhead);
+        return newhead;
     }
 };
