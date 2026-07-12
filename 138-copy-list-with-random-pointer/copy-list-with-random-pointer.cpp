@@ -16,52 +16,43 @@ public:
 
 class Solution {
 public:
-    void insertattail(Node*& head,Node*& tail,int data){
-        Node* temp=new Node(data);
-        if(head==NULL) head=tail=temp;
-        else{
-            tail->next=temp;
-            tail=temp;
-        }
-    }
-    Node* revert(Node* h1,Node* h2){
-        Node* temp=h1;
-        Node* temp2=h1;
-        while(temp!=NULL){
-            temp2=temp->next;
-            temp->next=h2;
-            temp=h2;
-            h2=h2->next;
-            temp->next=temp2;
-            temp=temp2;
-        }
-        return h1;
-    }
     Node* copyRandomList(Node* head) {
-        Node* clonehead=NULL;
-        Node* clonetail=NULL;
-        
+
+        if(head==NULL ){
+            return NULL;
+        }
+
         Node* temp=head;
-        while(temp!=NULL){  // CREATING THE NEW NODE
-            insertattail(clonehead,clonetail,temp->val);
+        Node* newhead=new Node(temp->val);
+        Node* tail=newhead;
+        
+        temp=temp->next;
+
+        while(temp!=NULL){
+            Node* n=new Node(temp->val);
+            tail->next=n;
+            tail=tail->next;
             temp=temp->next;
         }
 
-        Node* modified=revert(head,clonehead); // MODIFYING THE LIST
+        unordered_map<Node*,Node*> m;
+        Node* temp1=head;
+        Node* temp2=newhead;
 
-        while(modified!=NULL){
-            if(modified->random==NULL) modified->next->random=NULL; 
-            else modified->next->random=modified->random->next;
-            modified=modified->next->next;
+        while(temp1!=NULL){
+            m[temp1]=temp2;
+            temp1=temp1->next;
+            temp2=temp2->next;
+        }
+        temp1=head;
+        temp2=newhead;
+
+        while(temp1!=NULL){
+            temp2->random=m[temp1->random];
+            temp1=temp1->next;
+            temp2=temp2->next;
         }
 
-        temp=head;// REVERTING THE CHANGES
-        while(temp!=NULL){
-            modified=temp->next;
-            if(temp->next==NULL) temp->next=NULL;
-            else temp->next=temp->next->next;
-            temp=modified;
-        }
-        return clonehead;
+        return newhead;
     }
 };
