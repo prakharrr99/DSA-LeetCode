@@ -5,16 +5,25 @@ public:
     int n;
     KthLargest(int k, vector<int>& nums) {
         n=k;
-       
+        int n=nums.size();
         for(int i=0;i<nums.size();i++){
             pq.push(nums[i]);
         }
-        while(pq.size()>k) pq.pop();
+        for(int i=1;i<=n-k;i++){
+            pq.pop();
+        }
     }
     
     int add(int val) {
-        pq.push(val);
-        while(pq.size()>n) pq.pop();
+        if(pq.size()!=n){
+            pq.push(val);
+            return pq.top();
+        }
+        if(pq.top()<=val){
+            pq.push(val);
+            pq.pop();
+        }
+        
         return pq.top();
     }
 };
