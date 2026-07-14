@@ -19,38 +19,35 @@ public:
         return s;
     }
     ListNode* reverse(ListNode* head,int k){
-
         if(head==NULL || head->next==NULL) return head;
         if(length(head)<k) return head;
-
-        ListNode* prev=NULL;
-        ListNode* curr=head;
-        ListNode* nex=curr;
-        while(curr!=NULL){
-            nex=curr->next;
-            curr->next=prev;
-            prev=curr;
-            curr=nex;
+        ListNode* p=NULL;
+        ListNode* c=head;
+        ListNode* n=head;
+       
+        while(c!=NULL){
+            n=c->next;
+            c->next=p;
+            p=c;
+            c=n;
         }
-        return prev;
+        return p;
     }
     ListNode* reverseKGroup(ListNode* head, int k) {
         if(head==NULL || head->next==NULL) return head;
         if(length(head)<k) return head;
-        
+
         ListNode* temp=head;
-        for(int i=1;i<k;i++){
+        for(int i=0;i<k-1 ;i++){
             temp=temp->next;
         }
         ListNode* nex=temp->next;
         temp->next=NULL;
         head=reverse(head,k);
-
-        ListNode* curr=head;
-        while(curr->next!=NULL){
-            curr=curr->next;
-        }
-        curr->next=reverseKGroup(nex,k);
+       
+        ListNode* tail=head;
+        while(tail->next!=NULL) tail=tail->next;
+        tail->next=reverseKGroup(nex,k);
         return head;
     }
 };
