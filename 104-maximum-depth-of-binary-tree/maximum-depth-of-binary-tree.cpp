@@ -10,22 +10,9 @@
  * };
  */
 class Solution {
-private:
-    void count(TreeNode* root,int a,int& maxi){
-        if(root==NULL){
-            maxi=max(maxi,a);
-            return;
-        }
-        a=a+1;
-        count(root->left,a,maxi);
-        count(root->right,a,maxi);
-        a=a-1;
-    }
 public:
     int maxDepth(TreeNode* root) {
-        int maxi=INT_MIN;
-        int a=0;
-        count(root,a,maxi);
-        return maxi;
+        if(root==NULL) return 0;
+        return max(maxDepth(root->left)+1,maxDepth(root->right)+1);
     }
 };
