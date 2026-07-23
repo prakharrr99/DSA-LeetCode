@@ -11,36 +11,46 @@
  */
 class Solution {
 public:
+    void solve(TreeNode* root,int r,int c,map<pair<int,int>,vector<int>>& m){
+        if(root==NULL) return ;
+        m[{c,r}].push_back(root->val);
+        solve(root->left,r+1,c-1,m);
+        solve(root->right,r+1,c+1,m);
+    }
     vector<vector<int>> verticalTraversal(TreeNode* root) {
+        map<pair<int,int>,vector<int>> m;
+        solve(root,0,0,m);
         vector<vector<int>> ans;
-        if(root==NULL) return ans;
-        map<int,vector<pair<int,int>>> m;
-
-        queue<pair<TreeNode*,pair<int,int>>> q;
-        q.push(make_pair(root,make_pair(0,0))); //row and coloumn
-        while(!q.empty()){
-            pair<TreeNode*,pair<int,int>> temp=q.front();
-            q.pop();
-            int col=temp.second.second;
-            int row=temp.second.first;
-            m[col].push_back(make_pair(row,temp.first->val));
-            if(temp.first->left!=NULL){
-                q.push(make_pair(temp.first->left,make_pair(row+1,col-1)));
-            }
-            if(temp.first->right!=NULL){
-                q.push(make_pair(temp.first->right,make_pair(row+1,col+1)));
+        vector<int> a;
+        int c=INT_MAX;
+        for(auto it:m){
+            for(auto iit:it.second){
+                cout<<iit<<" "<<endl;
             }
         }
-        for(auto& i:m){
-            sort(i.second.begin(),i.second.end());
-        }
-        for(auto i:m){
-            vector<int> temp;
-            for(int j=0;j<i.second.size();j++){
-                temp.push_back(i.second[j].second);
+        for(auto it:m){
+            sort(it.second.begin(),it.second.end());
+            if(c==INT_MAX){
+                for(auto iit:it.second){
+                    a.push_back(iit);
+                }
+                c=it.first.first;
             }
-            ans.push_back(temp);
+            else if(c==it.first.first){
+                for(auto iit:it.second){
+                    a.push_back(iit);
+                }
+            }
+            else{
+                ans.push_back(a);
+                a.clear();
+                c=it.first.first;
+                for(auto iit:it.second){
+                    a.push_back(iit);
+                }
+            }
         }
+        ans.push_back(a);
         return ans;
     }
 };
