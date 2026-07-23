@@ -11,38 +11,35 @@
  */
 class Solution {
 public:
+    void lot(TreeNode* root,vector<vector<int>>& ans){
+        queue<TreeNode*> q;
+        q.push(root);
+        int c=1;
+        while(!q.empty()){
+            int s=q.size();
+            vector<int> t;
+            for(int i=0;i<s;i++){
+                TreeNode* temp=q.front();
+                t.push_back(temp->val);
+                q.pop();
+                if(temp->left) q.push(temp->left);
+                if(temp->right) q.push(temp->right);
+            }
+            if(c){
+                c=0;
+                ans.push_back(t);
+            }
+            else{
+                c=1;
+                reverse(t.begin(),t.end());
+                ans.push_back(t);
+            }
+        }
+    }
     vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
         vector<vector<int>> ans;
         if(root==NULL) return ans;
-        queue<TreeNode*> q;
-        q.push(root);
-        q.push(NULL);
-        vector<int> p;
-        while(!q.empty()){
-            TreeNode* temp=q.front();
-            q.pop();
-            if(temp==NULL){
-                ans.push_back(p);
-                p.clear();
-                if(!q.empty()){
-                    q.push(NULL);
-                }
-            }
-            else{
-                p.push_back(temp->val);
-                if(temp->left!=NULL){
-                    q.push(temp->left);
-                }
-                if(temp->right!=NULL){
-                    q.push(temp->right);
-                }
-            }
-        }
-        for(int i=0;i<ans.size();i++){
-            if(i%2!=0){
-                reverse(ans[i].begin(),ans[i].end());
-            }
-        }
+        lot(root,ans);
         return ans;
     }
 };
