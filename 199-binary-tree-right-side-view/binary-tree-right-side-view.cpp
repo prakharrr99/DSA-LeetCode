@@ -10,36 +10,24 @@
  * };
  */
 class Solution {
-private:
-    void solve(TreeNode* root,vector<int>& ans,int l){
-        if(root==NULL) return ;
-        if(ans.size()==l) ans.push_back(root->val);
-        solve(root->right,ans,l+1);
-        solve(root->left,ans,l+1);
-    }
 public:
     vector<int> rightSideView(TreeNode* root) {
-        vector<int> ans;
-        if(root==NULL) return ans;
-        solve(root,ans,0);
-        // queue<TreeNode*> q;
-        // q.push(root);
-        // q.push(NULL);
-        // int a=0;
-        // while(!q.empty()){
-        //     TreeNode* temp=q.front();
-        //     q.pop();
-        //     if(temp==NULL){
-        //         a=0;
-        //         if(!q.empty()) q.push(NULL);
-        //     }
-        //     else{
-        //         if(a==0) ans.push_back(temp->val);
-        //         a++;
-        //         if(temp->right!=NULL) q.push(temp->right);
-        //         if(temp->left!=NULL) q.push(temp->left);
-        //     }
-        // }
-        return ans;
+        vector<int> a;
+        if(root==NULL) return a;
+        
+        map<int,int> m;
+        queue<pair<TreeNode*,int>> q;
+        q.push({root,0});
+        while(!q.empty()){
+            pair<TreeNode*,int> p=q.front();
+            q.pop();
+            if(p.first->left) q.push({p.first->left,p.second+1});
+            if(p.first->right) q.push({p.first->right,p.second+1});
+            m[p.second]=p.first->val;
+        }
+        for(auto it:m){
+            a.push_back(it.second);
+        }
+        return a;
     }
 };
