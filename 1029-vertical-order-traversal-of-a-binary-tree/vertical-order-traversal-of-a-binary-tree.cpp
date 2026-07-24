@@ -11,46 +11,26 @@
  */
 class Solution {
 public:
-    void solve(TreeNode* root,int r,int c,map<pair<int,int>,vector<int>>& m){
-        if(root==NULL) return ;
-        m[{c,r}].push_back(root->val);
-        solve(root->left,r+1,c-1,m);
-        solve(root->right,r+1,c+1,m);
+    void f(TreeNode* root,int c,int r,map<int,map<int,multiset<int>>>& m){
+        if(root==NULL) return;
+        m[c][r].insert(root->val);
+        f(root->left,c-1,r+1,m);
+        f(root->right,c+1,r+1,m);
     }
     vector<vector<int>> verticalTraversal(TreeNode* root) {
-        map<pair<int,int>,vector<int>> m;
-        solve(root,0,0,m);
         vector<vector<int>> ans;
-        vector<int> a;
-        int c=INT_MAX;
+        if(root==NULL) return ans;
+        map<int,map<int,multiset<int>>> m;
+        f(root,0,0,m);
         for(auto it:m){
+            vector<int> a;
             for(auto iit:it.second){
-                cout<<iit<<" "<<endl;
+                for(auto iiit:iit.second){
+                    a.push_back(iiit);
+                }
             }
+            ans.push_back(a);
         }
-        for(auto it:m){
-            sort(it.second.begin(),it.second.end());
-            if(c==INT_MAX){
-                for(auto iit:it.second){
-                    a.push_back(iit);
-                }
-                c=it.first.first;
-            }
-            else if(c==it.first.first){
-                for(auto iit:it.second){
-                    a.push_back(iit);
-                }
-            }
-            else{
-                ans.push_back(a);
-                a.clear();
-                c=it.first.first;
-                for(auto iit:it.second){
-                    a.push_back(iit);
-                }
-            }
-        }
-        ans.push_back(a);
         return ans;
     }
 };
