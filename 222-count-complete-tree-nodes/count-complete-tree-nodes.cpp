@@ -11,18 +11,35 @@
  */
 class Solution {
 public:
-    void t(TreeNode* root,int& c){
-        if(root==NULL){
-            return;
+    int lh(TreeNode* root){
+        int h=0;
+        while(root!=NULL){
+            root=root->left;
+            h++;
         }
-        c++;
-        t(root->left,c);
-        t(root->right,c);
+        return h;
+    }
+    int rh(TreeNode* root){
+        int h=0;
+        while(root!=NULL){
+            root=root->right;
+            h++;
+        }
+        return h;
+    }
+    int s(TreeNode* root){
+        if(root==NULL) return 0;
+        int l=lh(root->left);
+        int r=rh(root->right);
+
+        if(l==r){
+            cout<<((1<<(1+r))-1)<<endl;
+            return ((1<<(1+r))-1);
+        }
+        return 1+s(root->left)+s(root->right);
     }
     int countNodes(TreeNode* root) {
         if(root==NULL) return 0;
-        int c=0;
-        t(root,c);
-        return c;
+        return s(root);
     }
 };
