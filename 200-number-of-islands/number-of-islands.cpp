@@ -1,42 +1,40 @@
 class Solution {
 public:
-    void bfs(vector<vector<char>>& grid,vector<vector<int>>& v,pair<int,int>& p){
-        queue<pair<int,int>> q;
-        q.push(p);
-        while(!q.empty()){
-            pair<int,int> a=q.front();
-            q.pop();
-            if(a.first>0 && grid[a.first-1][a.second]=='1' && v[a.first-1][a.second]==0){
-                q.push({a.first-1,a.second});
-                v[a.first-1][a.second]=1;
-            }
-            if(a.first<grid.size()-1 && grid[a.first+1][a.second]=='1' && v[a.first+1][a.second]==0){
-                q.push({a.first+1,a.second});
-                v[a.first+1][a.second]=1;
-            }
-            if(a.second>0 && grid[a.first][a.second-1]=='1' && v[a.first][a.second-1]==0){
-                q.push({a.first,a.second-1});
-                v[a.first][a.second-1]=1;
-            }
-            if(a.second<grid[0].size()-1 && grid[a.first][a.second+1]=='1' && v[a.first][a.second+1]==0){
-                q.push({a.first,a.second+1});
-                v[a.first][a.second+1]=1;
-            }
+    void f(vector<vector<char>>& grid,vector<vector<int>>& v,int r,int c){
+        int n=grid.size();
+        int m=grid[0].size();
+        if(r-1>=0 && v[r-1][c]==0 && grid[r-1][c]=='1'){
+            v[r-1][c]=1;
+            f(grid,v,r-1,c);
+        }
+        if(c-1>=0 && v[r][c-1]==0 && grid[r][c-1]=='1'){
+            v[r][c-1]=1;
+            f(grid,v,r,c-1);
+        }
+        if(r+1<n && v[r+1][c]==0 && grid[r+1][c]=='1'){
+            v[r+1][c]=1;
+            f(grid,v,r+1,c);
+        }
+        if(c+1<m && v[r][c+1]==0 && grid[r][c+1]=='1'){
+            v[r][c+1]=1;
+            f(grid,v,r,c+1);
         }
     }
     int numIslands(vector<vector<char>>& grid) {
-        vector<vector<int>> v(grid.size(),vector<int>(grid[0].size(),0));
-
-        int b=0;
-        for(int i=0;i<grid.size();i++){
-            for(int j=0;j<grid[0].size();j++){
+        int n=grid.size();
+        int m=grid[0].size();
+        vector<vector<int>> v(n,vector<int>(m,0));
+        
+        int c=0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
                 if(grid[i][j]=='1' && v[i][j]==0){
-                    pair<int,int> a={i,j};
-                    bfs(grid,v,a);
-                    b++;
-                } 
+                    c++;
+                    v[i][j]=1;
+                    f(grid,v,i,j);
+                }
             }
         }
-        return b;
+        return c;
     }
 };
