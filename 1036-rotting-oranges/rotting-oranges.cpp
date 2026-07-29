@@ -1,41 +1,59 @@
 class Solution {
 public:
-    int orangesRotting(vector<vector<int>>& grid) {
-        vector<vector<int>> temp=grid;
-        int time=0;
-        while(true){
-            int c=0;
-            for(int i=0;i<grid.size();i++){
-                for(int j=0;j<grid[0].size();j++){
-                    if(temp[i][j]==2){
-                        if(i>0 && temp[i-1][j]==1){
-                            grid[i-1][j]=2;
-                            c=1;
-                        }
-                        if(i<grid.size()-1 && temp[i+1][j]==1){
-                            grid[i+1][j]=2;
-                            c=1;
-                        }
-                        if(j>0 && temp[i][j-1]==1){
-                            grid[i][j-1]=2;
-                            c=1;
-                        }
-                        if(j<grid[0].size()-1 && temp[i][j+1]==1){
-                            grid[i][j+1]=2;
-                            c=1;
-                        }  
-                    }
+    void bfs(queue<pair<int,int>>& q,vector<vector<int>>& v,vector<vector<int>>& g,int& t){
+        
+        while(!q.empty()){
+            int s=q.size();
+            t++;
+            for(int i=0;i<s;i++){
+                pair<int,int> p=q.front();
+                q.pop();
+                int a=p.first;
+                int b=p.second;
+                g[a][b]=2;
+                if(a-1>=0 && v[a-1][b]==0 && g[a-1][b]==1){
+                    v[a-1][b]=1;
+                    q.push({a-1,b});
+                }
+                if(a+1<g.size() && v[a+1][b]==0 && g[a+1][b]==1){
+                    v[a+1][b]=1;
+                    q.push({a+1,b});
+                }
+                if(b-1>=0 && v[a][b-1]==0 && g[a][b-1]==1){
+                    v[a][b-1]=1;
+                    q.push({a,b-1});
+                }
+                if(b+1<g[0].size() && v[a][b+1]==0 && g[a][b+1]==1){
+                    v[a][b+1]=1;
+                    q.push({a,b+1});
                 }
             }
-            if(c==0) break; 
-            time++;
-            temp=grid;
         }
-        for(auto it:grid){
+    }
+    int orangesRotting(vector<vector<int>>& grid) {
+        vector<vector<int>> g=grid;
+
+        vector<vector<int>> v(g.size(),vector<int>(g[0].size(),0));
+
+        queue<pair<int,int>> q;
+        for(int i=0;i<g.size();i++){
+            for(int j=0;j<g[0].size();j++){
+                if(g[i][j]==2 && v[i][j]==0){
+                    q.push({i,j});
+                    v[i][j]=1; 
+                }
+            }
+        }
+        int t=-1;
+        bfs(q,v,g,t);
+
+        for(auto it:g){
             for(auto iit:it){
                 if(iit==1) return -1;
             }
         }
-        return time;
+        if(t==-1) return 0;
+        return t;
+
     }
 };
