@@ -13,8 +13,6 @@ public:
             for(auto it:graph[node]){
                 if(v[it]==-1){
                     v[it]=!v[node];
-                    // if(v[node]==0) v[it]=1;
-                    // else v[it]=0;
                     q.push(it);
                 }
                 else if(v[it]==v[node]) return false;
