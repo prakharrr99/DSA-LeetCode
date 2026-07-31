@@ -17,29 +17,25 @@ public:
 
         int c=0;
         int f=2;
-        vector<int> v(26,0);
+        
         while(!pq.empty()){
             pair<char,int>p=pq.top();
             pq.pop();
             char it=p.first;
             if(f<=9){
-                v[it-'a']=1;
-                c+=(v[it-'a']*p.second);
+                c+=(1*p.second);
                 f++;
             }
             else if(f<=17){
-                v[it-'a']=2;
-                c+=(v[it-'a']*p.second);
+                c+=(2*p.second);
                 f++;
             }
             else if(f<=25){
-                v[it-'a']=3;
-                c+=(v[it-'a']*p.second);
+                c+=(3*p.second);
                 f++;
             }
             else if(f<=27){
-                v[it-'a']=4;
-                c+=(v[it-'a']*p.second);
+                c+=(4*p.second);
                 f++;
             }
         }
