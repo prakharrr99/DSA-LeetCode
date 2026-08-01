@@ -1,48 +1,40 @@
 class Solution {
 public:
-    bool dfs(vector<int>& ans,vector<vector<int>>& g,vector<int>& v,int node,unordered_map<int,int>& terminal){
-        if(terminal.find(node)!=terminal.end()) return true;
+    bool dfs(vector<vector<int>>& g,vector<int>& v,vector<int>& p,vector<int>& check,int node){
+        v[node]=1;
+        p[node]=1;
+        check[node]=0;
 
-        v[node]=2;
         for(auto it:g[node]){
-            if(v[it]!=2){
-                if(dfs(ans,g,v,it,terminal)==false){
-                    return false;
-                }
-                else{
-                    terminal[it]=1;
+            if(v[it]!=1){
+                if(dfs(g,v,p,check,it)){
+                    check[node]=0;
+                    return true;
                 }
             }
-            else{
-                return false;
+            else if(v[it] && p[it]){
+                check[node]=0;
+                return true;
             }
         }
-        v[node]=1;
-        return true;
+        p[node]=0;
+        check[node]=1;
+        return false;
     }
     vector<int> eventualSafeNodes(vector<vector<int>>& g) {
-        
-        vector<int> ans;
-        unordered_map<int,int> terminal;
+        vector<int> p(g.size(),0);
+        vector<int> safe;
+        vector<int> v(g.size(),0);
+        vector<int> check(g.size(),0);
 
         for(int i=0;i<g.size();i++){
-            if(g[i].size()==0){
-                ans.push_back(i);
-                terminal[i]=1;
+            if(!v[i]){
+                dfs(g,v,p,check,i);
             }
         }
-
         for(int i=0;i<g.size();i++){
-            if(g[i].size()==0){
-                // ans.push_back(i);
-                // terminal[i]=1;
-                continue;
-            }
-            vector<int> v(g.size(),0);
-            if(dfs(ans,g,v,i,terminal)) ans.push_back(i);
+            if(check[i]==1) safe.push_back(i);
         }
-
-        sort(ans.begin(),ans.end());
-        return ans;
+        return safe;
     }
 };
