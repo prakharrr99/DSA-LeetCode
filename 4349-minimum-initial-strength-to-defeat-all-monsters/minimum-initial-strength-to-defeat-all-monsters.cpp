@@ -10,7 +10,6 @@ public:
         return true;
     }
     long long minInitialStrength(vector<int>& monsters, vector<vector<int>>& boosts) {
-        sort(boosts.begin(),boosts.end());
         
         vector<long long> diff(monsters.size()+1,0);
 
